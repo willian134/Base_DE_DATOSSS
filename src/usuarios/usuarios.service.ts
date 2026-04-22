@@ -1,32 +1,51 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsuariosService {
-  constructor(private prisma: PrismaService) {}
 
-  // CREATE
-  create(data: any) {
-    return this.prisma.usuario.create({ data });
-  }
+  private usuarios = [
+    { id: 1, nombre: 'Ana' },
+    { id: 2, nombre: 'Luis' },
+    { id: 3, nombre: 'Carlos' },
+  ];
 
-  // READ
   findAll() {
-    return this.prisma.usuario.findMany();
+    return this.usuarios;
   }
 
-  // UPDATE
+  findOne(id: number) {
+    return this.usuarios.find(u => u.id === id);
+  }
+
+  create(data: any) {
+    const nuevo = {
+      id: this.usuarios.length + 1,
+      ...data,
+    };
+    this.usuarios.push(nuevo);
+    return nuevo;
+  }
+
   update(id: number, data: any) {
-    return this.prisma.usuario.update({
-      where: { id },
-      data,
-    });
+    const index = this.usuarios.findIndex(u => u.id === id);
+
+    if (index === -1) return { message: 'Usuario no encontrado' };
+
+    this.usuarios[index] = {
+      ...this.usuarios[index],
+      ...data,
+    };
+
+    return this.usuarios[index];
   }
 
-  // DELETE
   remove(id: number) {
-    return this.prisma.usuario.delete({
-      where: { id },
-    });
+    const index = this.usuarios.findIndex(u => u.id === id);
+
+    if (index === -1) return { message: 'Usuario no encontrado' };
+
+    const eliminado = this.usuarios.splice(index, 1);
+
+    return eliminado;
   }
 }
