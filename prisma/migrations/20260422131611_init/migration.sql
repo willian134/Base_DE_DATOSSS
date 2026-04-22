@@ -1,0 +1,10 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `activo` on the `Usuario` table. All the data in the column will be lost.
+  - You are about to drop the column `creadoEn` on the `Usuario` table. All the data in the column will be lost.
+
+*/
+-- AlterTable
+ALTER TABLE "Usuario" DROP COLUMN "activo",
+DROP COLUMN "creadoEn";
